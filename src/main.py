@@ -24,6 +24,7 @@ class Main(QMainWindow, Ui_Main):
         else:
             print('Не удалось получить изображение карты...')
 
+
 if __name__ == '__main__':
     app = QApplication(sys.argv)
     ex = Main()
