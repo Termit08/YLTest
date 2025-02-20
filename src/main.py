@@ -1,4 +1,6 @@
-from PyQt6.QtWidgets import QMainWindow
+import sys
+
+from PyQt6.QtWidgets import QMainWindow, QApplication
 from PyQt6.QtGui import QPixmap
 from frontend.designs.design import Ui_Main
 
@@ -21,3 +23,9 @@ class Main(QMainWindow, Ui_Main):
             self.map.setPixmap(QPixmap(img)) 
         else:
             print('Не удалось получить изображение карты...')
+
+if __name__ == '__main__':
+    app = QApplication(sys.argv)
+    ex = Main()
+    ex.show()
+    sys.exit(app.exec())
