@@ -73,22 +73,22 @@ class Main(QMainWindow):
 
         elif event.key() == Qt.Key.Key_Up:
             if self.scale > 0:
-                self.longitude_value += 0.001
+                self.lattitude_value += 0.001
                 self.update_map()
 
         elif event.key() == Qt.Key.Key_Down:
             if self.scale > 0:
-                self.longitude_value -= 0.001
+                self.lattitude_value -= 0.001
                 self.update_map()
 
         elif event.key() == Qt.Key.Key_Left:
             if self.scale > 0:
-                self.lattitude_value -= 0.001
+                self.longitude_value -= 0.001
                 self.update_map()
 
         elif event.key() == Qt.Key.Key_Right:
             if self.scale > 0:
-                self.lattitude_value += 0.001
+                self.longitude_value += 0.001
                 self.update_map()
         elif event.key() in (Qt.Key.Key_Return, Qt.Key.Key_Enter):
             self.search_toponym()
