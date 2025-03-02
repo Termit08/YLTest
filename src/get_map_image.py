@@ -1,6 +1,4 @@
 import requests
-# from PIL import Image
-# from io import BytesIO
 
 
 map_api_server = "https://static-maps.yandex.ru/1.x/"
