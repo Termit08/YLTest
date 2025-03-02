@@ -1,6 +1,6 @@
 import sys
 from PyQt6.QtWidgets import QMainWindow, QApplication, QLineEdit, QPushButton, QLabel
-from PyQt6.QtGui import QPixmap, QKeyEvent, QFont
+from PyQt6.QtGui import QPixmap, QKeyEvent, QIcon
 from PyQt6 import uic
 from PyQt6.QtCore import Qt
 from utils import *
@@ -22,23 +22,33 @@ class Main(QMainWindow):
         self.search_input.setGeometry(42, 520, 317, 35)
 
         self.search_label = QLabel(self)
-        self.search_label.setText('Найти объект на карте:')
-        self.search_label.setStyleSheet("color: white; font-size: 20pt; font: large 'Times New Roman'")
+        self.search_label.setText("Введите объект:")
+        self.search_label.setStyleSheet(
+            "color: white; font-size: 20pt; font: large 'Times New Roman'"
+        )
         self.search_label.setGeometry(42, 480, 317, 25)
-        
+
         self.search_button = QPushButton(self)
-        self.search_button.setText('Найти объект на карте:')
-        self.search_button.setStyleSheet("background-color: white; color: black; font-size: 17pt; font: large 'Times New Roman'")
-        self.search_button.setGeometry(42, 570, 317, 80)
+        self.search_button.setText("Найти")
+        self.search_button.setStyleSheet(
+            "background-color: white; color: black; font-size: 17pt; font: large 'Times New Roman'"
+        )
+        self.search_button.setGeometry(42, 570, 230, 80)
+
+        self.reset_button = QPushButton(self)
+        self.reset_button.setStyleSheet("background-color: white;")
+        self.reset_button.setGeometry(280, 570, 80, 80)
+        self.reset_button.setIcon(QIcon('data/icons/trash-can.png'))
 
         self.ready_btn.clicked.connect(self.set_map_image)
         self.theme_btn.clicked.connect(self.update_theme)
+        self.reset_button.clicked.connect(self.reset)
         self.search_button.clicked.connect(self.search_toponym)
         self.scale = 0
         self.longitude_value = 0
         self.lattitude_value = 0
         self.theme = "light"
-        self.point_status = False   # Флаг для метки в середине изображения
+        self.point_status = False  # Флаг для метки в середине изображения
 
     def set_map_image(self):
         try:
@@ -49,9 +59,7 @@ class Main(QMainWindow):
             print("Введите числа")
             return 0
 
-        img = get_map_image(
-            self.longitude_value, self.lattitude_value, self.scale, self.theme
-        )
+        img = get_map_image(self.longitude_value, self.lattitude_value, self.scale, self.theme)
 
         if img[0] == 200:
             self.map.setPixmap(QPixmap(img[1]))
@@ -105,8 +113,7 @@ class Main(QMainWindow):
 
     def update_map(self):
         img = get_map_image(
-            self.longitude_value, self.lattitude_value, self.scale, self.theme
-        )
+            self.longitude_value, self.lattitude_value, self.scale, self.theme)
 
         if img[0] == 200:
             if not self.point_status:
@@ -123,7 +130,7 @@ class Main(QMainWindow):
         else:
             print("Не удалось получить изображение карты...")
             print(img)
-    
+
     def search_toponym(self):
         toponym = self.search_input.text()
 
@@ -132,8 +139,13 @@ class Main(QMainWindow):
             self.longitude_value, self.lattitude_value = float(result[0]), float(result[1])
             self.scale = 17
             self.point_status = True
-        
+
         self.update_map()
+    
+    def reset(self):
+        self.map.clear()
+        self.search_input.clear()
+
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)
