@@ -138,7 +138,7 @@ color: rgb(255, 255, 255);</string>
 color: rgb(255, 255, 255);</string>
     </property>
     <property name="text">
-     <string>Масштаб (От 0 до 17):</string>
+     <string>Масштаб (От 0 до 21):</string>
     </property>
    </widget>
    <widget class="QPushButton" name="ready_btn">
