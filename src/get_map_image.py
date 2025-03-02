@@ -5,12 +5,13 @@ map_api_server = "https://static-maps.yandex.ru/1.x/"
 map_apikey = "55515925-9197-4295-b309-a9fe09499027"
 
 
-def get_map_image(longitude, lattitude, scale):
+def get_map_image(longitude, lattitude, scale, theme):
     try:
         map_params = {
             # "ll": ",".join([longitude, lattitude]),
             "ll": ",".join([str(lattitude), str(longitude)]),
             "z": scale,
+            "theme": theme,
             "apikey": map_apikey,
             "size": "601,421",
             "l": "map",
