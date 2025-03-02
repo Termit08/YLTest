@@ -128,7 +128,8 @@ class Main(QMainWindow):
         toponym = self.search_input.text()
 
         if toponym:
-            self.longitude_value, self.lattitude_value = get_toponym_ll(toponym)
+            result = get_toponym_ll(toponym)
+            self.longitude_value, self.lattitude_value = float(result[0]), float(result[1])
             self.scale = 17
             self.point_status = True
         
