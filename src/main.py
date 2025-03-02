@@ -12,14 +12,18 @@ class Main(QMainWindow):
         uic.loadUi("./data/design.ui", self)
         self.setWindowTitle("Карта")
         self.ready_btn.clicked.connect(self.set_map_image)
-        self.scale = 0.005  
+        self.scale = 0
         self.longitude_value = 0
         self.lattitude_value = 0
 
     def set_map_image(self):
-        self.longitude_value = self.longitude.text()
-        self.lattitude_value = self.width.text()
-        self.scale = int(self.coord.text())
+        try:
+            self.longitude_value = float(self.longitude.text())
+            self.lattitude_value = float(self.width.text())
+            self.scale = int(self.coord.text())
+        except:
+            print("Введите числа")
+            return 0
 
         img = get_map_image(self.longitude_value, self.lattitude_value, self.scale)
 
@@ -30,6 +34,7 @@ class Main(QMainWindow):
             print(img)
     
     def keyPressEvent(self, event: QKeyEvent):
+        self.setFocus()
         if event.key() == Qt.Key.Key_PageUp:
             if self.scale < 21:
                 self.scale += 1 
@@ -38,6 +43,26 @@ class Main(QMainWindow):
         elif event.key() == Qt.Key.Key_PageDown:
             if self.scale > 0:
                 self.scale -= 1
+                self.update_map()
+        
+        elif event.key() == Qt.Key.Key_Up:
+            if self.scale > 0:
+                self.longitude_value += 0.001
+                self.update_map()
+
+        elif event.key() == Qt.Key.Key_Down:
+            if self.scale > 0:
+                self.longitude_value -= 0.001
+                self.update_map()
+        
+        elif event.key() == Qt.Key.Key_Left:
+            if self.scale > 0:
+                self.lattitude_value -= 0.001
+                self.update_map()
+
+        elif event.key() == Qt.Key.Key_Right:
+            if self.scale > 0:
+                self.lattitude_value += 0.001
                 self.update_map()
         
     
