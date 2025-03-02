@@ -52,7 +52,7 @@ def draw_point(image):
     
     center_x = width // 2
     center_y = height // 2
-    point_radius = 5
+    point_radius = 4
     
     draw.ellipse((center_x - point_radius, center_y - point_radius, 
         center_x + point_radius, center_y + point_radius),

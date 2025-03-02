@@ -113,11 +113,9 @@ class Main(QMainWindow):
                 self.map.setPixmap(QPixmap(img[1]))
             else:
                 image = Image.open(img[1])
-                image = (image)
-                
+                image = draw_point(image)
                 buffer = BytesIO()
                 image.save(buffer, format="PNG")
-                buffer.seek(0)
                 pixmap = QPixmap()
                 pixmap.loadFromData(buffer.getvalue())
                 self.map.setPixmap(pixmap)
