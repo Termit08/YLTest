@@ -13,10 +13,7 @@ class Main(QMainWindow):
         uic.loadUi("./data/design.ui", self)
         self.setWindowTitle("Карта")
 
-        """
-        Обновление дизайна: поле ввода топонима для поиска
-        """
-
+        # Добавленные элементы
         self.search_input = QLineEdit(self)
         self.search_input.setStyleSheet("background-color: white;")
         self.search_input.setGeometry(42, 520, 317, 35)
@@ -44,11 +41,13 @@ class Main(QMainWindow):
         self.theme_btn.clicked.connect(self.update_theme)
         self.reset_button.clicked.connect(self.reset)
         self.search_button.clicked.connect(self.search_toponym)
+
         self.scale = 0
         self.longitude_value = 0
         self.lattitude_value = 0
         self.theme = "light"
-        self.point_status = False  # Флаг для метки в середине изображения
+        self.point_status = False
+        self.address_label = self.findChild(QLabel, "address_label")  # Находим добавленный QLabel
 
     def set_map_image(self):
         try:
@@ -136,15 +135,35 @@ class Main(QMainWindow):
 
         if toponym:
             result = get_toponym_ll(toponym)
-            self.longitude_value, self.lattitude_value = float(result[0]), float(result[1])
-            self.scale = 17
-            self.point_status = True
+            if result:
+                self.longitude_value, self.lattitude_value = float(result[0]), float(result[1])
+                self.scale = 17
+                self.point_status = True
+                
+                address = self.get_full_address(toponym)
+                self.address_label.setText(f"Адрес: {address}")
 
         self.update_map()
-    
+
+    def get_full_address(self, toponym):
+        geocoder_params = {
+            "apikey": geocoder_apikey,
+            "geocode": toponym,
+            "format": "json"
+        }
+
+        response = requests.get(geocoder_api_server, params=geocoder_params)
+
+        if response:
+            json_response = response.json()
+            toponym = json_response["response"]["GeoObjectCollection"]["featureMember"][0]["GeoObject"]
+            return toponym["metaDataProperty"]["GeocoderMetaData"]["text"]
+        return "Адрес не найден"
+
     def reset(self):
         self.map.clear()
         self.search_input.clear()
+        self.address_label.setText("Адрес: ")
 
 
 if __name__ == "__main__":
